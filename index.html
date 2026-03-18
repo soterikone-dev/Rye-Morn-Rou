@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Ryelie's Morning">
+<title>Ryelie's Morning Routine</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
+<script src="https://code.responsivevoice.org/responsivevoice.js?key=FREE"></script>
+<style>
+:root {
+  --coral: #FF6B9D;
+  --mint: #06D6A0;
+  --lavender: #C77DFF;
+  --blue: #4CC9F0;
+  --sunny: #FFD166;
+  --pink-light: #FFE8F5;
+  --text: #2D1B69;
+  --shadow: 0 6px 24px rgba(199,125,255,0.18);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'Baloo 2', cursive;
+  background: linear-gradient(160deg, #FFE8F5 0%, #E8F4FF 50%, #E8FFF5 100%);
+  min-height: 100vh;
+  padding-bottom: 40px;
+}
+
+/* ── BUBBLES ── */
+.bubble {
+  position: fixed; border-radius: 50%; pointer-events: none;
+  animation: rise linear infinite; opacity: 0.10;
+}
+@keyframes rise {
+  0%   { transform: translateY(110vh); opacity: 0; }
+  10%  { opacity: 0.10; }
+  90%  { opacity: 0.10; }
+  100% { transform: translateY(-20vh); opacity: 0; }
+}
+
+/* ── HEADER ── */
+.header { text-align: center; padding: 24px 20px 10px; }
+.app-title {
+  font-size: clamp(22px, 6vw, 38px); font-weight: 800;
+  color: var(--text); line-height: 1.1;
+  text-shadow: 0 2px 0 rgba(255,255,255,0.8);
+}
+.app-title span {
+  background: linear-gradient(135deg, var(--coral), var(--lavender));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.good-morning {
+  font-size: clamp(14px, 3.5vw, 20px); font-weight: 700;
+  color: var(--text); opacity: 0.65; margin-top: 2px;
+}
+
+/* ── PROGRESS ── */
+.progress-wrap {
+  margin: 10px auto 0; max-width: 400px;
+  background: rgba(255,255,255,0.6); border-radius: 20px; height: 16px;
+  border: 2px solid rgba(255,255,255,0.9); overflow: hidden;
+}
+.progress-fill {
+  height: 100%; border-radius: 20px; width: 0%;
+  background: linear-gradient(90deg, var(--mint), var(--blue), var(--lavender));
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+  transition: width 0.5s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes shimmer { 0% { background-position: 0% 0%; } 100% { background-position: 200% 0%; } }
+.progress-text {
+  font-size: 12px; font-weight: 700; color: var(--text);
+  opacity: 0.6; margin-top: 4px; text-align: center;
+}
+
+/* ── BUDDY ── */
+.buddy-zone { display: flex; justify-content: center; margin: 6px 0 2px; }
+.buddy-wrap { position: relative; width: 96px; height: 96px; }
+.buddy-svg { width: 96px; height: 96px; animation: bob 2.5s ease-in-out infinite; filter: drop-shadow(0 5px 10px rgba(199,125,255,0.3)); }
+@keyframes bob { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-7px) rotate(2deg); } }
+.bubble-speech {
+  position: absolute; top: -12px; right: -92px;
+  background: white; border-radius: 14px; padding: 7px 12px;
+  font-size: 11px; font-weight: 700; color: var(--text);
+  box-shadow: 0 3px 12px rgba(0,0,0,0.1); max-width: 148px;
+  text-align: center; line-height: 1.3; z-index: 10;
+  animation: pop 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.bubble-speech::before {
+  content: ''; position: absolute; left: -7px; top: 50%; transform: translateY(-50%);
+  border-top: 6px solid transparent; border-bottom: 6px solid transparent; border-right: 8px solid white;
+}
+@keyframes pop { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+/* ── BULK BUTTONS ── */
+.bulk-row {
+  display: flex; gap: 10px; max-width: 480px;
+  margin: 8px auto 2px; padding: 0 16px;
+}
+.bulk-btn {
+  flex: 1; border: none; border-radius: 18px; padding: 11px 8px;
+  font-family: 'Baloo 2', cursive; font-size: 14px; font-weight: 800;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  gap: 5px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  -webkit-appearance: none; touch-action: manipulation;
+}
+.btn-alldone { background: linear-gradient(135deg, var(--mint), var(--blue)); color: white; }
+.btn-fresh   { background: white; color: var(--coral); border: 2.5px solid var(--coral); }
+
+/* ── EDIT TOGGLE ── */
+.edit-toggle {
+  text-align: center; font-size: 12px; font-weight: 700;
+  color: var(--lavender); text-decoration: underline;
+  cursor: pointer; margin: 3px 0 5px; opacity: 0.7;
+}
+
+/* ── TASK LIST ── */
+.task-list {
+  max-width: 480px; margin: 0 auto;
+  padding: 0 14px; display: flex; flex-direction: column; gap: 10px;
+}
+
+/* ── TASK CARD ── */
+.task-card {
+  background: white; border-radius: 22px;
+  border: 3px solid transparent;
+  box-shadow: var(--shadow);
+  position: relative;
+  animation: slideIn 0.45s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@keyframes slideIn { 0% { transform: translateX(-30px); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
+.task-card.done { border-color: var(--mint); background: linear-gradient(135deg, #F0FFF8, #E8FFF5); }
+
+/* Card main row */
+.card-row {
+  display: flex; align-items: center; gap: 11px;
+  padding: 12px 13px;
+  cursor: pointer;
+  -webkit-user-select: none; user-select: none;
+}
+
+.emoji-box {
+  width: 52px; height: 52px; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; flex-shrink: 0;
+}
+.task-name { flex: 1; font-size: 14px; font-weight: 800; color: var(--text); line-height: 1.2; }
+.task-card.done .task-name { text-decoration: line-through; opacity: 0.45; }
+
+.check-circle {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 3px solid #E0E0E0; background: white;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+.task-card.done .check-circle { background: var(--mint); border-color: var(--mint); transform: scale(1.1); }
+.check-circle svg { display: none; }
+.task-card.done .check-circle svg { display: block; }
+
+.undo-btn {
+  display: none; width: 28px; height: 28px; border-radius: 50%;
+  border: 2px solid var(--coral); background: #FFF0F6;
+  color: var(--coral); font-size: 14px; font-weight: 900;
+  align-items: center; justify-content: center;
+  cursor: pointer; flex-shrink: 0;
+  -webkit-appearance: none; touch-action: manipulation;
+}
+.task-card.done .undo-btn { display: flex; }
+
+/* Remove btn in edit mode */
+.remove-btn {
+  display: none; position: absolute; top: -8px; right: -8px;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--coral); border: none; color: white;
+  font-size: 12px; font-weight: 900;
+  align-items: center; justify-content: center;
+  cursor: pointer; z-index: 20;
+  -webkit-appearance: none; touch-action: manipulation;
+  box-shadow: 0 2px 6px rgba(255,107,157,0.4);
+}
+
+/* ── SUBSTEPS ── */
+.substep-row {
+  display: flex; flex-wrap: wrap; gap: 7px;
+  padding: 0 13px 12px 76px;
+}
+.task-card.done .substep-row { display: none; }
+.step-btn {
+  background: #F5F0FF; border: 2px solid #E0D5FF; border-radius: 14px;
+  padding: 6px 13px; font-family: 'Baloo 2', cursive;
+  font-size: 13px; font-weight: 800; color: var(--text);
+  cursor: pointer; -webkit-appearance: none; touch-action: manipulation;
+  transition: background 0.2s, border-color 0.2s;
+}
+.step-btn.done { background: #E8FFF5; border-color: var(--mint); color: var(--mint); text-decoration: line-through; }
+
+/* Edit mode — gentle glow, no transform animation so drag works */
+.edit-active .task-card { box-shadow: 0 4px 18px rgba(199,125,255,0.28); border-color: rgba(199,125,255,0.35) !important; }
+.edit-active .drag-handle { color: var(--lavender); }
+.edit-active .remove-btn { display: flex; }
+
+/* Add task btn */
+.add-btn {
+  width: 100%; border: 3px dashed rgba(199,125,255,0.4); border-radius: 22px;
+  background: linear-gradient(135deg, #F0E8FF, #E8F4FF);
+  font-family: 'Baloo 2', cursive; font-size: 15px; font-weight: 800;
+  color: var(--lavender); padding: 13px; cursor: pointer;
+  display: none; -webkit-appearance: none; touch-action: manipulation;
+}
+.edit-active .add-btn { display: block; }
+
+/* ── BONUS SECTION ── */
+.bonus-wrap {
+  max-width: 480px; margin: 14px auto 0; padding: 0 14px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.bonus-label {
+  text-align: center; font-size: 11px; font-weight: 800;
+  color: var(--text); opacity: 0.4; letter-spacing: 1px; text-transform: uppercase;
+}
+.locked-card {
+  border-radius: 22px; padding: 14px 16px;
+  display: flex; align-items: center; gap: 12px;
+  border: 3px dashed #E0D5FF; background: rgba(255,255,255,0.4);
+  opacity: 0.55;
+}
+.locked-card .lock-title { font-size: 14px; font-weight: 800; color: #bbb; }
+.locked-card .lock-sub   { font-size: 11px; font-weight: 600; color: #ccc; margin-top: 1px; }
+.locked-icon { font-size: 26px; }
+
+/* HK card */
+.hk-btn {
+  width: 100%; border: none; border-radius: 22px; padding: 0; cursor: pointer; -webkit-user-select: none;
+  background: linear-gradient(135deg, #FF6B9D, #FFB3D1);
+  box-shadow: 0 8px 28px rgba(255,107,157,0.35);
+  display: none; -webkit-appearance: none; touch-action: manipulation;
+  animation: pulse-pink 2.2s ease-in-out infinite;
+}
+.hk-btn.unlocked { display: flex; }
+@keyframes pulse-pink {
+  0%,100% { box-shadow: 0 8px 28px rgba(255,107,157,0.35); }
+  50%      { box-shadow: 0 12px 36px rgba(255,107,157,0.55); }
+}
+.hk-inner { display: flex; align-items: center; gap: 12px; padding: 16px 18px; }
+.hk-icon  { width: 54px; height: 54px; border-radius: 16px; background: rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; }
+.hk-text  .hk-title { font-size: 18px; font-weight: 800; color: white; }
+.hk-text  .hk-sub   { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.85); margin-top: 2px; }
+.hk-arrow { font-size: 20px; color: rgba(255,255,255,0.7); margin-left: auto; }
+
+/* Daff card */
+.daff-btn {
+  width: 100%; border: none; border-radius: 22px; padding: 0; cursor: pointer;
+  background: linear-gradient(135deg, #C77DFF, #7C3AED);
+  box-shadow: 0 8px 28px rgba(167,139,250,0.35);
+  display: none; -webkit-appearance: none; touch-action: manipulation;
+  animation: pulse-purple 2.6s ease-in-out infinite;
+}
+.daff-btn.unlocked { display: flex; }
+@keyframes pulse-purple {
+  0%,100% { box-shadow: 0 8px 28px rgba(167,139,250,0.35); }
+  50%      { box-shadow: 0 12px 36px rgba(167,139,250,0.55); }
+}
+.daff-inner { display: flex; align-items: center; gap: 12px; padding: 16px 18px; }
+.daff-icon  { width: 54px; height: 54px; border-radius: 16px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; }
+.daff-text  .daff-title { font-size: 18px; font-weight: 800; color: white; }
+.daff-text  .daff-sub   { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.82); margin-top: 2px; }
+.daff-arrow { font-size: 20px; color: rgba(255,255,255,0.7); margin-left: auto; }
+
+/* ── OVERLAYS ── */
+.overlay {
+  position: fixed; inset: 0; z-index: 500;
+  display: none; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 28px;
+}
+.overlay.show { display: flex; animation: fadeIn 0.4s ease both; }
+@keyframes fadeIn { 0% { opacity: 0; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }
+
+/* Celebration overlay */
+.overlay-celeb { background: linear-gradient(135deg, #FFE8F5, #E8F4FF, #E8FFF5); }
+.celeb-stars  { font-size: 48px; animation: spin2 2s linear infinite; }
+@keyframes spin2 { 0%,100% { transform: rotate(-8deg) scale(1); } 50% { transform: rotate(8deg) scale(1.08); } }
+.celeb-animal { font-size: 76px; animation: bounce2 1.2s ease-in-out infinite; }
+@keyframes bounce2 { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+.celeb-title  { font-size: clamp(26px,8vw,46px); font-weight: 800; color: var(--text); margin: 12px 0 4px; line-height: 1.1; }
+.celeb-title span { background: linear-gradient(135deg,var(--coral),var(--lavender),var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.celeb-aff    { background: white; border-radius: 24px; padding: 18px 22px; margin: 14px 0; max-width: 340px; font-size: clamp(15px,4vw,20px); font-weight: 700; color: var(--text); line-height: 1.4; box-shadow: 0 6px 24px rgba(199,125,255,0.2); border: 3px solid rgba(199,125,255,0.15); position: relative; }
+.celeb-aff::before { content: '✨'; position: absolute; top: -14px; left: 50%; transform: translateX(-50%); font-size: 24px; }
+.overlay-btn  { border: none; border-radius: 50px; padding: 14px 34px; font-family: 'Baloo 2', cursive; font-size: 17px; font-weight: 800; cursor: pointer; margin-top: 6px; -webkit-appearance: none; touch-action: manipulation; }
+.btn-restart  { background: linear-gradient(135deg, var(--coral), var(--lavender)); color: white; box-shadow: 0 5px 16px rgba(255,107,157,0.35); }
+
+/* HK overlay */
+.overlay-hk   { background: radial-gradient(ellipse at center, #FFE8F2, #FFB3D1 60%, #FF6B9D); }
+.hk-big-heart { font-size: 88px; animation: heartbeat 0.9s ease-in-out infinite; }
+@keyframes heartbeat { 0%,100% { transform: scale(1); } 14% { transform: scale(1.18); } 28% { transform: scale(1); } 42% { transform: scale(1.1); } }
+.hk-big-title { font-size: clamp(28px,9vw,48px); font-weight: 800; color: white; margin: 10px 0 6px; text-shadow: 0 2px 10px rgba(180,0,70,0.25); }
+.hk-msg       { background: rgba(255,255,255,0.3); border-radius: 22px; padding: 16px 20px; max-width: 330px; font-size: clamp(15px,4.2vw,20px); font-weight: 800; color: white; line-height: 1.4; margin: 8px 0 18px; border: 2px solid rgba(255,255,255,0.35); }
+.btn-hk-close { background: white; color: var(--coral); box-shadow: 0 4px 14px rgba(0,0,0,0.1); }
+
+/* Daff overlay */
+.overlay-daff { background: linear-gradient(160deg, #EDE9FE, #DDD6FE, #C4B5FD, #A78BFA); overflow-y: auto; padding: 12px 16px 16px !important; justify-content: flex-start !important; align-items: center; gap: 0; }
+.daff-crown   { font-size: 40px; animation: crownbob 1.7s ease-in-out infinite; margin-bottom: 0; line-height: 1; }
+@keyframes crownbob { 0%,100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-9px) rotate(4deg); } }
+.daff-main-title { font-size: clamp(16px,5vw,26px); font-weight: 800; color: var(--text); margin: 1px 0 3px; }
+.daff-main-title span { background: linear-gradient(135deg,var(--coral),var(--lavender)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.daff-card    { background: white; border-radius: 20px; padding: 14px 16px 10px; max-width: 340px; width: 100%; margin: 4px 0; position: relative; box-shadow: 0 6px 28px rgba(167,139,250,0.22); border: 3px solid rgba(167,139,250,0.2); }
+.daff-badge   { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg,var(--coral),var(--lavender)); color: white; border-radius: 50px; padding: 3px 14px; font-size: 11px; font-weight: 800; white-space: nowrap; }
+.daff-aff-text { font-size: clamp(13px,3.8vw,17px); font-weight: 800; color: var(--text); line-height: 1.35; margin-top: 3px; }
+.daff-say-it  { font-size: 11px; font-weight: 700; color: rgba(90,60,150,0.65); margin-top: 5px; font-style: italic; }
+.daff-btns    { display: flex; gap: 6px; margin-top: 4px; flex-wrap: wrap; justify-content: center; }
+.btn-daff-new   { background: white; color: var(--lavender); border: 2.5px solid var(--lavender); border-radius: 50px; padding: 10px 18px; font-family: 'Baloo 2', cursive; font-size: 14px; font-weight: 800; cursor: pointer; -webkit-appearance: none; touch-action: manipulation; }
+.btn-daff-close { background: linear-gradient(135deg,var(--lavender),#7C3AED); color: white; border: none; border-radius: 50px; padding: 10px 22px; font-family: 'Baloo 2', cursive; font-size: 14px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 14px rgba(167,139,250,0.4); -webkit-appearance: none; touch-action: manipulation; }
+
+/* ── SETTINGS ── */
+.settings-btn {
+  position: fixed; top: 14px; right: 14px; width: 42px; height: 42px;
+  background: white; border-radius: 50%; border: none; font-size: 20px;
+  cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+  display: flex; align-items: center; justify-content: center; z-index: 200;
+  -webkit-appearance: none; touch-action: manipulation;
+}
+.settings-panel {
+  position: fixed; inset: 0; background: rgba(45,27,105,0.4); z-index: 300;
+  display: none; align-items: flex-end;
+}
+.settings-panel.open { display: flex; }
+.settings-sheet {
+  background: white; border-radius: 28px 28px 0 0; padding: 20px 20px 36px;
+  width: 100%; max-height: 78vh; overflow-y: auto;
+  animation: sheetup 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@keyframes sheetup { 0% { transform: translateY(100%); } 100% { transform: translateY(0); } }
+.settings-title { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 14px; }
+.settings-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 0; border-bottom: 2px solid #F5F0FF;
+  font-size: 14px; font-weight: 700; color: var(--text);
+}
+.settings-row:last-child { border-bottom: none; }
+.tog {
+  width: 50px; height: 27px; border-radius: 14px; border: none;
+  position: relative; cursor: pointer; flex-shrink: 0;
+  -webkit-appearance: none; touch-action: manipulation; transition: background 0.3s;
+}
+.tog::after {
+  content: ''; position: absolute; top: 2.5px; left: 2.5px;
+  width: 22px; height: 22px; border-radius: 50%; background: white;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15); transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+.tog.on  { background: var(--mint); }
+.tog.off { background: #D0D0D0; }
+.tog.on::after { transform: translateX(23px); }
+.settings-close {
+  width: 100%; margin-top: 14px; background: linear-gradient(135deg,var(--coral),var(--lavender));
+  color: white; border: none; border-radius: 18px; padding: 12px;
+  font-family: 'Baloo 2', cursive; font-size: 16px; font-weight: 800;
+  cursor: pointer; -webkit-appearance: none; touch-action: manipulation;
+}
+
+/* ── CONFETTI ── */
+.confetti { position: fixed; pointer-events: none; z-index: 9999; border-radius: 2px; animation: fall linear forwards; }
+@keyframes fall { 0% { transform: translateY(-10px) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
+.floatheart { position: fixed; pointer-events: none; z-index: 9999; animation: floatup ease-out forwards; }
+@keyframes floatup { 0% { transform: translateY(0) scale(0.6); opacity: 1; } 100% { transform: translateY(-75vh) scale(1.1); opacity: 0; } }
+.starburst { position: fixed; pointer-events: none; z-index: 9000; animation: starpop cubic-bezier(0.34,1.56,0.64,1) forwards; }
+@keyframes starpop { 0% { transform: scale(0); opacity: 1; } 60% { transform: scale(1.3); opacity: 1; } 100% { transform: scale(0.8) translateY(-36px); opacity: 0; } }
+
+/* ── DRAG HANDLE ── */
+.drag-handle {
+  display: none; align-items: center; justify-content: center;
+  width: 32px; height: 44px; cursor: grab; flex-shrink: 0;
+  color: #C0B0E0; font-size: 20px; padding-right: 2px;
+  touch-action: none;
+}
+.edit-active .drag-handle { display: flex; }
+.task-card.dragging {
+  opacity: 0.55; transform: scale(1.03);
+  box-shadow: 0 16px 40px rgba(199,125,255,0.35);
+  z-index: 100; position: relative;
+}
+.task-card.drag-over { border-color: var(--lavender) !important; }
+
+/* ── HK UNLOCK BANNER ── */
+#hkBanner {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 600;
+  background: linear-gradient(135deg, #FF6B9D, #FFB3D1, #FF6B9D);
+  background-size: 200% 100%;
+  animation: bannerSlide 0.5s cubic-bezier(0.34,1.56,0.64,1) both,
+             bannerShimmer 1.5s linear infinite;
+  padding: 18px 24px;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  box-shadow: 0 6px 24px rgba(255,107,157,0.45);
+  cursor: pointer;
+}
+#hkBanner.hidden { display: none; }
+@keyframes bannerSlide {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  100% { transform: translateY(0);     opacity: 1; }
+}
+@keyframes bannerShimmer {
+  0%   { background-position: 0% 0%;   }
+  100% { background-position: 200% 0%; }
+}
+.banner-heart { font-size: 32px; animation: heartbeat 0.9s ease-in-out infinite; }
+.banner-text  {
+  font-family: 'Baloo 2', cursive; font-size: 22px; font-weight: 800;
+  color: white; text-shadow: 0 2px 6px rgba(180,0,70,0.25);
+}
+.banner-tap   {
+  font-family: 'Baloo 2', cursive; font-size: 12px; font-weight: 700;
+  color: rgba(255,255,255,0.85); margin-top: 2px;
+}
+
+/* ── VOICE BUTTON ── */
+.voice-btn {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: linear-gradient(135deg, #FF6B9D, #C77DFF);
+  border: 4px solid rgba(255,255,255,0.6);
+  font-size: 32px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 28px rgba(199,125,255,0.55), 0 0 0 0 rgba(199,125,255,0.4);
+  -webkit-appearance: none; touch-action: manipulation;
+  animation: pulse-voice 1.8s ease-in-out infinite;
+  margin: 4px auto 2px;
+  flex-shrink: 0;
+}
+@keyframes pulse-voice {
+  0%   { box-shadow: 0 8px 28px rgba(199,125,255,0.55), 0 0 0 0 rgba(199,125,255,0.5); transform: scale(1); }
+  50%  { box-shadow: 0 12px 36px rgba(199,125,255,0.70), 0 0 0 14px rgba(199,125,255,0); transform: scale(1.08); }
+  100% { box-shadow: 0 8px 28px rgba(199,125,255,0.55), 0 0 0 0 rgba(199,125,255,0); transform: scale(1); }
+}
+.voice-btn.speaking {
+  background: linear-gradient(135deg, var(--mint), var(--blue));
+  animation: speaking-pulse 0.6s ease-in-out infinite;
+}
+@keyframes speaking-pulse {
+  0%,100% { transform: scale(1); }
+  50%      { transform: scale(1.12); }
+}
+</style>
+</head>
+<body>
+
+<!-- HK UNLOCK BANNER -->
+<div id="hkBanner" class="hidden">
+  <div class="banner-heart">💖</div>
+  <div>
+    <div class="banner-text">Hugs &amp; Kisses! 🥰</div>
+    <div class="banner-tap">Tap to open your love message!</div>
+  </div>
+  <div class="banner-heart">💖</div>
+</div>
+
+<div class="bubble" style="width:100px;height:100px;background:#FF6B9D;left:8%;animation-duration:11s;animation-delay:0s;"></div>
+<div class="bubble" style="width:70px;height:70px;background:#4CC9F0;left:74%;animation-duration:8s;animation-delay:2s;"></div>
+<div class="bubble" style="width:55px;height:55px;background:#06D6A0;left:44%;animation-duration:13s;animation-delay:5s;"></div>
+<div class="bubble" style="width:85px;height:85px;background:#FFD166;left:85%;animation-duration:10s;animation-delay:1s;"></div>
+<div class="bubble" style="width:60px;height:60px;background:#C77DFF;left:20%;animation-duration:9s;animation-delay:4s;"></div>
+
+<button class="settings-btn" id="settingsOpenBtn">⚙️</button>
+
+<div class="header">
+  <div class="app-title">Ryelie's <span>Morning Routine</span> ✨</div>
+  <div class="good-morning">Good Morning, Ryelie! ☀️</div>
+  <div class="progress-wrap"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">0 of 5 done - You can do it! 💪</div>
+</div>
+
+<div class="buddy-zone">
+  <div class="buddy-wrap">
+    <svg class="buddy-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="34" cy="28" rx="9" ry="18" fill="#FFB3D1" transform="rotate(-8,34,28)"/>
+      <ellipse cx="34" cy="28" rx="5" ry="13" fill="#FF69B4" transform="rotate(-8,34,28)"/>
+      <ellipse cx="66" cy="28" rx="9" ry="18" fill="#FFB3D1" transform="rotate(8,66,28)"/>
+      <ellipse cx="66" cy="28" rx="5" ry="13" fill="#FF69B4" transform="rotate(8,66,28)"/>
+      <ellipse cx="50" cy="68" rx="26" ry="22" fill="#FFE4F0"/>
+      <circle cx="50" cy="50" r="28" fill="#FFD6E8"/>
+      <circle cx="40" cy="47" r="5" fill="white"/><circle cx="60" cy="47" r="5" fill="white"/>
+      <circle cx="41" cy="47" r="3" fill="#2D1B69"/><circle cx="61" cy="47" r="3" fill="#2D1B69"/>
+      <circle cx="42" cy="45.5" r="1" fill="white"/><circle cx="62" cy="45.5" r="1" fill="white"/>
+      <ellipse cx="50" cy="55" rx="4" ry="3" fill="#FF69B4"/>
+      <path d="M44 60 Q50 66 56 60" stroke="#FF69B4" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <circle cx="35" cy="57" r="6" fill="#FFB3D1" opacity="0.5"/>
+      <circle cx="65" cy="57" r="6" fill="#FFB3D1" opacity="0.5"/>
+      <text x="74" y="35" font-size="14" fill="#FFD166">✨</text>
+    </svg>
+    <div class="bubble-speech" id="buddyMsg">Let's have a great morning! 🌟</div>
+  </div>
+</div>
+
+<div class="bulk-row">
+  <button class="bulk-btn btn-alldone" id="btnAllDone">✅ All Done!</button>
+  <button class="bulk-btn btn-fresh"   id="btnFresh">🌈 Fresh Start</button>
+</div>
+<div class="edit-toggle" id="editToggle">✏️ Edit Tasks</div>
+
+<div class="task-list" id="taskList"></div>
+
+<div class="bonus-wrap">
+  <div class="bonus-label">🎁 Bonus Unlocks</div>
+
+  <div class="locked-card" id="hkLocked">
+    <div class="locked-icon">🔒</div>
+    <div><div class="lock-title">Hugs &amp; Kisses</div><div class="lock-sub">Finish all tasks to unlock!</div></div>
+  </div>
+  <div class="hk-btn" id="hkBtn" role="button" tabindex="0">
+    <div class="hk-inner">
+      <div class="hk-icon">🤗</div>
+      <div class="hk-text"><div class="hk-title">Hugs &amp; Kisses!</div><div class="hk-sub">Tap for your love explosion 💕</div></div>
+      <div class="hk-arrow">▶</div>
+    </div>
+  </div>
+
+  <div class="locked-card" id="daffLocked">
+    <div class="locked-icon">🔒</div>
+    <div><div class="lock-title">My Daily Power-Up</div><div class="lock-sub">Finish all tasks to unlock!</div></div>
+  </div>
+  <div class="daff-btn" id="daffBtn" role="button" tabindex="0">
+    <div class="daff-inner">
+      <div class="daff-icon">👑</div>
+      <div class="daff-text"><div class="daff-title">My Daily Power-Up!</div><div class="daff-sub">Tap for your superpower message ✨</div></div>
+      <div class="daff-arrow">▶</div>
+    </div>
+  </div>
+</div>
+
+<!-- CELEBRATION -->
+<div class="overlay overlay-celeb" id="overlayCeleb">
+  <div class="celeb-stars">🌟⭐🌟</div>
+  <div class="celeb-animal" id="celebAnimal">🎉</div>
+  <div class="celeb-title">You Did It, <span>Ryelie</span>! 🎊</div>
+  <div class="celeb-aff" id="celebAff"></div>
+  <button class="overlay-btn btn-restart" id="btnRestart">🌈 Fresh Start!</button>
+</div>
+
+<!-- HUGS & KISSES -->
+<div class="overlay overlay-hk" id="overlayHK">
+  <div class="hk-big-heart" id="hkHeart">💖</div>
+  <div class="hk-big-title">Hugs &amp; Kisses!</div>
+  <div class="hk-msg" id="hkMsg"></div>
+  <button class="overlay-btn btn-hk-close" id="btnHKClose">💕 Sending it right back!</button>
+</div>
+
+<!-- DAILY POWER-UP -->
+<div class="overlay overlay-daff" id="overlayDaff">
+  <div class="daff-crown">👑</div>
+  <div class="daff-main-title">Today I Am <span>Ryelie</span>!</div>
+  <div class="daff-card">
+    <div class="daff-badge">✨ My Daily Power-Up ✨</div>
+    <div class="daff-aff-text" id="daffAffText"></div>
+    <div class="daff-say-it">Say it loud — say it PROUD! 🎤</div>
+  </div>
+  <div class="daff-btns">
+    <button class="btn-daff-new"   id="btnDaffNew">🔄 New Message</button>
+    <button class="btn-daff-close" id="btnDaffClose">I Believe It! 💪</button>
+  </div>
+</div>
+
+<!-- SETTINGS -->
+<div class="settings-panel" id="settingsPanel">
+  <div class="settings-sheet">
+    <div class="settings-title">⚙️ Routine Settings</div>
+    <div id="settingsRows"></div>
+    <button class="settings-close" id="settingsCloseBtn">✓ Done</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════════════════════════
+const CELEB_AFFS = [
+  "You are SO smart and brave! Today is going to be AMAZING! 💫",
+  "You just conquered your whole morning! You can do ANYTHING! 🚀",
+  "You are a SUPERSTAR! Everyone at school is lucky to have you! ⭐",
+  "You are strong, kind, and absolutely wonderful! 🌈",
+  "Nothing can stop you today because you are YOU and YOU are amazing! 💪",
+  "Every single day you get even MORE awesome! Today is YOUR day! 🦋",
+  "You are like sunshine — you make everything brighter! ☀️",
+  "You are powerful, brilliant, and so very loved! 💕",
+  "You are already a WINNER! 🏆",
+  "The world needs exactly you today! 🌸",
+];
+const HK_MSGS = [
+  "Ryelie, you are wrapped in SO many hugs right now! 🤗",
+  "Big smooshy hug coming your way! You are SO loved! 🌈",
+  "MWAH! That is the biggest kiss in the whole universe, just for you! 💋",
+  "You are squeezed tight with love from everyone who adores you! 🫂",
+  "Hugs as big as a bear and kisses as sweet as candy! 🐻🍬",
+  "Love explosion! 3... 2... 1... 💥💖💥 You are SO loved!",
+  "Every hug in the world is being sent to you right now! 🤗",
+  "BIGGEST hug ever! You earned every single one! 💕",
+];
+const DAFF_AFFS = [
+  "MY voice matters. When I speak up, people listen! 🎤",
+  "I am BRAVE! Brave means doing things even when they feel scary — and I do it anyway! 🦁",
+  "I can do HARD things! Every time I try, I get stronger! 💪",
+  "I am KIND and POWERFUL at the same time! 🌟",
+  "Today I will try something new and that makes me AMAZING! 🚀",
+  "I am allowed to take up space, be loud, be funny, and be 100% ME! 🌈",
+  "My feelings are real and they matter! 💛",
+  "I am a LEADER! My ideas are awesome! 👑",
+  "Mistakes help me learn and GROW! 🌱",
+  "I choose to be HAPPY and SILLY and FULL of JOY today! 🎉",
+  "I am STRONG on the inside — stronger than I even know! ⭐",
+  "My smile lights up every room I walk into! ☀️",
+  "I am curious and creative and my imagination is amazing! 🎨",
+  "I belong exactly where I am! 🏡",
+  "I say YES to fun, YES to adventure, and YES to being wonderful ME! 🦋",
+  "No one in the whole world is exactly like me and that is my SUPERPOWER! ✨",
+  "I can ask for help and that makes me SMART! 🤝",
+  "I am going to have the BEST day because I am the BEST me! 💫",
+];
+const ANIMALS = ["🦄","🐰","🐼","🦁","🐸","🦊","🐨","🦋","🐬","🐙"];
+const HEARTS  = ["💖","💝","💗","💓","💞","🥰","😘"];
+
+const DEFAULT_TASKS = [
+  { id:1, label:"Wake Up (get out of bed!)",                   emoji:"🌅", color:"#FFF3D6", active:true,  steps:[] },
+  { id:2, label:"Potty Time! (use the bathroom)",              emoji:"🚿", color:"#E8F4FF", active:true,  steps:[] },
+  { id:3, label:"Get Dressed (shirt, pants, socks & shoes)",   emoji:"👗", color:"#F0E8FF", active:true,
+    steps:[{id:"s1",label:"👚 Shirt"},{id:"s2",label:"👖 Pants"},{id:"s3",label:"🧦 Socks"},{id:"s4",label:"👟 Shoes"}] },
+  { id:4, label:"Brush Hair",                                  emoji:"💇", color:"#FFE8F5", active:true,  steps:[] },
+  { id:5, label:"Brush Teeth (no huckie smuckies!)",           emoji:"🦷", color:"#E8FFF5", active:true,  steps:[] },
+  { id:6, label:"Pack Backpack",                               emoji:"🎒", color:"#F0E8FF", active:false, steps:[] },
+];
+
+// ═══════════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════════
+const VER = 'v25';
+if (localStorage.getItem('rrVer') !== VER) {
+  localStorage.removeItem('rrTasks');
+  localStorage.setItem('rrVer', VER);
+}
+let tasks     = JSON.parse(localStorage.getItem('rrTasks') || 'null') || DEFAULT_TASKS;
+let doneMap   = {};   // taskId -> bool
+let stepDone  = {};   // stepId -> bool
+let editMode  = false;
+let nextId    = Math.max(...tasks.map(t => t.id)) + 1;
+let lastDaffIdx = -1;
+let dragSrcId = null;
+
+function save() { localStorage.setItem('rrTasks', JSON.stringify(tasks)); }
+
+// ═══════════════════════════════════════════════════════════
+//  AUDIO
+// ═══════════════════════════════════════════════════════════
+let AC = null;
+function ac() {
+  if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)();
+  if (AC.state === 'suspended') AC.resume();
+  return AC;
+}
+// ── Audio engine — iOS-safe ───────────────────────────────
+function getAC() {
+  if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)();
+  return AC;
+}
+// Schedule a single note once context is guaranteed running
+function note(ctx, freq, type, vol, delay, dur, vibRate, vibDepth) {
+  const osc  = ctx.createOscillator();
+  const gain = ctx.createGain();
+  if (vibRate && vibDepth) {
+    const lfo = ctx.createOscillator();
+    const lg  = ctx.createGain();
+    lfo.frequency.value = vibRate;
+    lg.gain.value = vibDepth;
+    lfo.connect(lg); lg.connect(osc.frequency);
+    lfo.start(); lfo.stop(ctx.currentTime + delay + dur + 0.1);
+  }
+  osc.type = type; osc.frequency.value = freq;
+  osc.connect(gain); gain.connect(ctx.destination);
+  const t = ctx.currentTime + 0.02 + delay;
+  gain.gain.setValueAtTime(0, t);
+  gain.gain.linearRampToValueAtTime(vol, t + 0.03);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + Math.max(dur, 0.05));
+  osc.start(t); osc.stop(t + dur + 0.1);
+}
+// Play a list of note specs, resuming context first
+function play(specs) {
+  try {
+    const ctx = getAC();
+    const go = () => specs.forEach(s => note(ctx, ...s));
+    if (ctx.state === 'suspended') { ctx.resume().then(go); } else { go(); }
+  } catch(e) { console.log('audio err', e); }
+}
+
+// ── Sound effects — rainbow unicorn edition ───────────────
+// [freq, type, vol, delay, dur, vibRate?, vibDepth?]
+function sndTick()  { play([[1047,'sine',0.28,0,0.5,6,8],[1319,'sine',0.20,0.04,0.4],[2093,'triangle',0.10,0.02,0.25]]); }
+function sndStep()  { play([[1568,'sine',0.20,0,0.20,8,12],[1976,'triangle',0.10,0.05,0.16]]); }
+function sndReset() { play([[784,'sine',0.16,0,0.28,4,5],[659,'sine',0.13,0.13,0.28],[523,'sine',0.10,0.26,0.28]]); }
+function sndLove()  { play([[392,'sine',0.20,0,0.5,5,10],[494,'sine',0.18,0.12,0.5,5,10],[587,'sine',0.20,0.24,0.5,5,10],[784,'sine',0.24,0.36,0.65,5,10],[988,'sine',0.18,0.50,0.55,5,10],[1175,'triangle',0.12,0.64,0.50]]); }
+function sndPower() { play([[523,'square',0.10,0,0.18],[659,'square',0.10,0.13,0.18],[784,'square',0.10,0.26,0.18],[1047,'square',0.12,0.39,0.32],[1047,'sine',0.24,0.39,0.60,8,14],[1319,'sine',0.18,0.70,0.50,6,10],[1568,'triangle',0.10,0.92,0.40],[2093,'triangle',0.07,1.08,0.32]]); }
+function sndChime() { play([[523,'sine',0.24,0,0.75,5,8],[659,'sine',0.22,0.14,0.70,5,8],[784,'sine',0.24,0.28,0.70,5,8],[1047,'sine',0.26,0.42,0.75,6,10],[1319,'sine',0.24,0.56,0.70,6,10],[1568,'sine',0.20,0.70,0.65,5,8],[2093,'triangle',0.12,0.85,0.50],[2637,'triangle',0.09,0.95,0.40],[3136,'triangle',0.06,1.05,0.32],[1047,'sine',0.18,1.18,0.85,8,14],[1319,'sine',0.14,1.20,0.80,6,10],[1568,'sine',0.10,1.22,0.75,5,8]]); }
+
+// ═══════════════════════════════════════════════════════════
+//  RENDER TASKS
+// ═══════════════════════════════════════════════════════════
+function renderTasks() {
+  const list = document.getElementById('taskList');
+  const active = tasks.filter(t => t.active);
+  list.innerHTML = '';
+
+  active.forEach((task, idx) => {
+    const done = !!doneMap[task.id];
+    const hasSteps = task.steps && task.steps.length > 0;
+
+    // ── Outer card ──────────────────────────────────────────
+    const card = document.createElement('div');
+    card.className = 'task-card' + (done ? ' done' : '');
+    card.id = 'card' + task.id;
+    card.style.animationDelay = (idx * 0.05) + 's';
+
+    // Remove button
+    const rmBtn = document.createElement('button');
+    rmBtn.className = 'remove-btn';
+    rmBtn.textContent = '✕';
+    rmBtn.addEventListener('touchstart', e => e.stopPropagation(), { passive: false });
+    rmBtn.addEventListener('click', e => { e.stopPropagation(); doRemove(task.id); });
+    card.appendChild(rmBtn);
+
+    // ── Main tap row ─────────────────────────────────────────
+    const row = document.createElement('div');
+    row.className = 'card-row';
+
+    // Drag handle (shown in edit mode)
+    const handle = document.createElement('div');
+    handle.className = 'drag-handle';
+    handle.innerHTML = '⠿';
+    handle.setAttribute('data-taskid', task.id);
+    // Touch drag
+    handle.addEventListener('touchstart', onDragStart, { passive: false });
+    handle.addEventListener('touchmove',  onDragMove,  { passive: false });
+    handle.addEventListener('touchend',   onDragEnd,   { passive: false });
+    // Mouse drag (desktop)
+    handle.addEventListener('mousedown', onMouseDown);
+    row.appendChild(handle);
+
+    const emojiBox = document.createElement('div');
+    emojiBox.className = 'emoji-box';
+    emojiBox.style.background = task.color;
+    emojiBox.textContent = done ? '✅' : task.emoji;
+
+    const nameEl = document.createElement('div');
+    nameEl.className = 'task-name';
+    nameEl.textContent = task.label;
+
+    const checkEl = document.createElement('div');
+    checkEl.className = 'check-circle';
+    checkEl.innerHTML = '<svg width="16" height="12" viewBox="0 0 16 12" fill="none"><path d="M1.5 6L6 10.5L14.5 1.5" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+    const undoBtn = document.createElement('button');
+    undoBtn.className = 'undo-btn';
+    undoBtn.textContent = '↩';
+    undoBtn.addEventListener('touchstart', e => e.stopPropagation(), { passive: false });
+    undoBtn.addEventListener('click', e => { e.stopPropagation(); doUndo(task.id); });
+
+    row.appendChild(emojiBox);
+    row.appendChild(nameEl);
+    row.appendChild(checkEl);
+    row.appendChild(undoBtn);
+
+    // Tap the row to complete (non-substep tasks)
+    if (!hasSteps) {
+      row.addEventListener('click', () => {
+        if (editMode || done) return;
+        doComplete(task.id);
+      });
+    } else {
+      // For substep tasks: tapping the check circle completes the whole task immediately
+      // Individual substep buttons also work as before
+      checkEl.style.cursor = 'pointer';
+      checkEl.title = 'Tap to complete all at once!';
+      checkEl.addEventListener('click', e => {
+        e.stopPropagation();
+        if (editMode || done) return;
+        // Mark all substeps done then complete
+        task.steps.forEach(s => { stepDone[s.id] = true; });
+        doComplete(task.id);
+      });
+    }
+
+    card.appendChild(row);
+
+    // ── Substep buttons (always visible, no expand needed) ───
+    if (hasSteps && !done) {
+      const stepRow = document.createElement('div');
+      stepRow.className = 'substep-row';
+      task.steps.forEach(s => {
+        const sb = document.createElement('button');
+        sb.className = 'step-btn' + (stepDone[s.id] ? ' done' : '');
+        sb.textContent = s.label;
+        sb.addEventListener('click', e => {
+          e.stopPropagation();
+          if (!stepDone[s.id]) doStep(task.id, s.id);
+        });
+        stepRow.appendChild(sb);
+      });
+      card.appendChild(stepRow);
+    }
+
+    list.appendChild(card);
+  });
+
+  // Add task button
+  const addBtn = document.createElement('button');
+  addBtn.className = 'add-btn';
+  addBtn.textContent = '+ Add a Task';
+  addBtn.addEventListener('click', doAddTask);
+  list.appendChild(addBtn);
+
+  // Edit mode class
+  if (editMode) list.classList.add('edit-active');
+  else          list.classList.remove('edit-active');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ACTIONS
+// ═══════════════════════════════════════════════════════════
+function doComplete(taskId) {
+  if (doneMap[taskId]) return;
+  doneMap[taskId] = true;
+  sndTick();
+  const card = document.getElementById('card' + taskId);
+  if (card) {
+    card.classList.add('done');
+    card.style.animation = 'none';
+    setTimeout(() => { card.style.animation = ''; }, 10);
+  }
+  burstStars(taskId);
+  updateAll();
+  const active = tasks.filter(t => t.active);
+  if (active.every(t => doneMap[t.id])) setTimeout(showCeleb, 650);
+}
+
+function doStep(taskId, stepId) {
+  stepDone[stepId] = true;
+  sndStep();
+  const task = tasks.find(t => t.id === taskId);
+  if (task.steps.every(s => stepDone[s.id])) {
+    doComplete(taskId);
+  } else {
+    renderTasks();
+    updateAll();
+  }
+}
+
+function doUndo(taskId) {
+  doneMap[taskId] = false;
+  const task = tasks.find(t => t.id === taskId);
+  if (task && task.steps) task.steps.forEach(s => { stepDone[s.id] = false; });
+  sndReset();
+  renderTasks();
+  updateAll();
+}
+
+function doRemove(taskId) {
+  const t = tasks.find(t => t.id === taskId);
+  if (t) t.active = false;
+  save(); renderTasks(); updateAll();
+}
+
+function doAddTask() {
+  const name = prompt('Task name?');
+  if (name && name.trim()) {
+    tasks.push({ id: nextId++, label: name.trim(), emoji: '⭐', color: '#FFF8E8', active: true, steps: [] });
+    save(); renderTasks(); updateAll();
+  }
+}
+
+function doAllDone() {
+  tasks.filter(t => t.active).forEach(task => {
+    doneMap[task.id] = true;
+    if (task.steps) task.steps.forEach(s => { stepDone[s.id] = true; });
+  });
+  sndTick();
+  renderTasks(); updateAll();
+  setTimeout(showCeleb, 500);
+}
+
+function doFreshStart() {
+  doneMap = {}; stepDone = {};
+  sndReset();
+  document.getElementById('overlayCeleb').classList.remove('show');
+  document.getElementById('overlayHK').classList.remove('show');
+  document.getElementById('overlayDaff').classList.remove('show');
+  renderTasks(); updateAll();
+}
+
+// ═══════════════════════════════════════════════════════════
+//  PROGRESS + BUDDY + BONUS
+// ═══════════════════════════════════════════════════════════
+const BUDDY_MSGS = [
+  name => `Good morning, ${name}! Let's have the BEST day! 🌟`,
+  ()   => "Wow, you are doing SO great! ⭐",
+  ()   => "Keep going, superstar! 💫",
+  ()   => "Almost there! 🎯",
+  ()   => "You finished everything! Amazing! 🎉",
+];
+
+function updateAll() {
+  const active = tasks.filter(t => t.active);
+  const done   = active.filter(t => doneMap[t.id]).length;
+  const total  = active.length;
+  const pct    = total > 0 ? (done / total) * 100 : 0;
+
+  document.getElementById('progressFill').style.width = pct + '%';
+
+  const msgs = ['You can do it! 💪','Great start! ✨','You are doing so well! 🌟','Almost there! 💕','You are a rockstar! 🎸'];
+  const mi   = done === 0 ? 0 : Math.min(Math.floor(done / (total / msgs.length)), msgs.length - 1);
+  document.getElementById('progressText').textContent = done + ' of ' + total + ' done - ' + msgs[mi];
+
+  // Buddy message
+  let bmi = done === 0 ? 0 : done < total / 2 ? 1 : done < total ? 2 : 4;
+  const b = document.getElementById('buddyMsg');
+  b.style.animation = 'none'; b.offsetHeight;
+  b.style.animation = 'pop 0.35s cubic-bezier(0.34,1.56,0.64,1) both';
+  b.textContent = BUDDY_MSGS[bmi]('Ryelie');
+
+  // Bonus unlock
+  const allDone = total > 0 && done === total;
+  const wasLocked = !document.getElementById('hkBtn').classList.contains('unlocked');
+  document.getElementById('hkLocked').style.display   = allDone ? 'none' : 'flex';
+  document.getElementById('hkBtn').classList.toggle('unlocked', allDone);
+  document.getElementById('daffLocked').style.display  = allDone ? 'none' : 'flex';
+  document.getElementById('daffBtn').classList.toggle('unlocked', allDone);
+  // When bonuses first unlock: power-up opens at 1s, banner at 4s
+  if (allDone && wasLocked) {
+    setTimeout(showDaff, 1000);
+    setTimeout(showHKBanner, 4000);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  CELEBRATIONS + OVERLAYS
+// ═══════════════════════════════════════════════════════════
+function getDailyIndex(arr) {
+  const d = new Date();
+  const seed = d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+  return seed % arr.length;
+}
+function showCeleb() {
+  document.getElementById('celebAnimal').textContent = ANIMALS[getDailyIndex(ANIMALS)];
+  document.getElementById('celebAff').textContent    = CELEB_AFFS[Math.floor(Math.random() * CELEB_AFFS.length)];
+  document.getElementById('overlayCeleb').classList.add('show');
+  launchConfetti();
+  sndChime();
+}
+
+function showHK() {
+  document.getElementById('hkHeart').textContent = HEARTS[Math.floor(Math.random() * HEARTS.length)];
+  const hkMsg = HK_MSGS[Math.floor(Math.random() * HK_MSGS.length)];
+  document.getElementById('hkMsg').textContent = hkMsg;
+  document.getElementById('overlayHK').classList.add('show');
+  launchHearts();
+  // SPEAK FIRST — then love sound after voice starts
+  speakText(hkMsg);
+  setTimeout(sndLove, 300);
+}
+
+function showDaff() {
+  let idx;
+  do { idx = Math.floor(Math.random() * DAFF_AFFS.length); } while (idx === lastDaffIdx);
+  lastDaffIdx = idx;
+  const msg = DAFF_AFFS[idx];
+  document.getElementById('overlayCeleb').classList.remove('show');
+  document.getElementById('daffAffText').textContent = msg;
+  document.getElementById('overlayDaff').classList.add('show');
+  // SPEAK FIRST — synchronously before any sounds
+  speakText(msg);
+  // Fanfare plays after voice starts
+  setTimeout(sndPower, 300);
+}
+function newDaff() {
+  let idx; do { idx = Math.floor(Math.random() * DAFF_AFFS.length); } while (idx === lastDaffIdx);
+  lastDaffIdx = idx;
+  const el = document.getElementById('daffAffText');
+  el.style.opacity = '0';
+  setTimeout(() => { el.textContent = DAFF_AFFS[idx]; el.style.transition = 'opacity 0.3s'; el.style.opacity = '1'; }, 180);
+  sndStep();
+}
+
+// ═══════════════════════════════════════════════════════════
+//  PARTICLES
+// ═══════════════════════════════════════════════════════════
+function burstStars(taskId) {
+  const card = document.getElementById('card' + taskId);
+  if (!card) return;
+  const r = card.getBoundingClientRect();
+  const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  ['⭐','✨','🌟','💫'].forEach((s, i) => {
+    const el = document.createElement('div');
+    el.className = 'starburst'; el.textContent = s; el.style.fontSize = '24px';
+    el.style.left = (cx + (Math.random() - 0.5) * 80) + 'px';
+    el.style.top  = (cy + (Math.random() - 0.5) * 36) + 'px';
+    el.style.animationDuration = '0.65s';
+    el.style.animationDelay = (i * 0.07) + 's';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 900);
+  });
+}
+
+function launchConfetti() {
+  const cols = ['#FF6B9D','#FFD166','#06D6A0','#4CC9F0','#C77DFF','#FF9F43'];
+  for (let i = 0; i < 65; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti';
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.background = cols[Math.floor(Math.random() * cols.length)];
+    el.style.width  = (7 + Math.random() * 8) + 'px';
+    el.style.height = (7 + Math.random() * 8) + 'px';
+    el.style.borderRadius = Math.random() > 0.5 ? '50%' : '3px';
+    el.style.animationDuration = (1.2 + Math.random() * 1.2) + 's';
+    el.style.animationDelay    = (Math.random() * 0.6) + 's';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 2600);
+  }
+}
+
+function launchHearts() {
+  const hs = ['💖','💝','💗','💓','💞','💕','😘','🥰'];
+  for (let i = 0; i < 26; i++) {
+    const el = document.createElement('div');
+    el.className = 'floatheart';
+    el.textContent = hs[Math.floor(Math.random() * hs.length)];
+    el.style.left = (5 + Math.random() * 90) + 'vw';
+    el.style.bottom = '0';
+    el.style.fontSize = (18 + Math.random() * 22) + 'px';
+    el.style.animationDuration = (1.3 + Math.random() * 1.4) + 's';
+    el.style.animationDelay    = (Math.random() * 0.9) + 's';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3000);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  SETTINGS
+// ═══════════════════════════════════════════════════════════
+function renderSettings() {
+  const wrap = document.getElementById('settingsRows');
+  wrap.innerHTML = '';
+  tasks.forEach(task => {
+    const row = document.createElement('div');
+    row.className = 'settings-row';
+    const label = document.createElement('span');
+    label.textContent = task.emoji + ' ' + task.label;
+    const tog = document.createElement('button');
+    tog.className = 'tog ' + (task.active ? 'on' : 'off');
+    tog.addEventListener('click', () => {
+      task.active = !task.active;
+      tog.className = 'tog ' + (task.active ? 'on' : 'off');
+      save(); renderTasks(); updateAll();
+    });
+    row.appendChild(label);
+    row.appendChild(tog);
+    wrap.appendChild(row);
+  });
+}
+
+
+// ═══════════════════════════════════════════════════════════
+//  DRAG TO REORDER — floating clone approach (iOS-safe)
+// ═══════════════════════════════════════════════════════════
+let dragTaskId = null;
+let dragEl     = null;
+let dragClone  = null;
+let dragOverId = null;
+let dragOffsetY = 0;
+
+function getDragY(e) { return e.touches ? e.touches[0].clientY : e.clientY; }
+function getDragX(e) { return e.touches ? e.touches[0].clientX : e.clientX; }
+
+function onDragStart(e) {
+  if (!editMode) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const taskId = parseInt(e.currentTarget.getAttribute('data-taskid'));
+  dragTaskId = taskId;
+  dragEl = document.getElementById('card' + taskId);
+  const r = dragEl.getBoundingClientRect();
+  dragOffsetY = getDragY(e) - r.top;
+
+  // Create a floating clone that follows the finger
+  dragClone = dragEl.cloneNode(true);
+  dragClone.style.cssText = [
+    'position:fixed',
+    'left:' + r.left + 'px',
+    'top:' + r.top + 'px',
+    'width:' + r.width + 'px',
+    'z-index:9999',
+    'opacity:0.92',
+    'pointer-events:none',
+    'border-radius:22px',
+    'box-shadow:0 18px 48px rgba(199,125,255,0.45)',
+    'transform:scale(1.04)',
+    'transition:none',
+    'background:white',
+  ].join(';');
+  document.body.appendChild(dragClone);
+
+  // Dim the original
+  dragEl.style.opacity = '0.25';
+}
+
+function onDragMove(e) {
+  if (!dragTaskId || !dragClone) return;
+  e.preventDefault();
+  const y = getDragY(e);
+  const x = getDragX(e);
+
+  // Move the clone
+  dragClone.style.top = (y - dragOffsetY) + 'px';
+
+  // Find which card the clone center is over
+  const cloneCenterY = y - dragOffsetY + dragClone.offsetHeight / 2;
+  const list = document.getElementById('taskList');
+  const cards = [...list.querySelectorAll('.task-card')].filter(c => c !== dragEl);
+  let overCard = null;
+  for (const card of cards) {
+    const r = card.getBoundingClientRect();
+    if (cloneCenterY >= r.top && cloneCenterY <= r.bottom) { overCard = card; break; }
+  }
+  cards.forEach(c => c.classList.remove('drag-over'));
+  if (overCard) {
+    overCard.classList.add('drag-over');
+    dragOverId = parseInt(overCard.id.replace('card', ''));
+  } else {
+    dragOverId = null;
+  }
+}
+
+function onDragEnd(e) {
+  if (!dragTaskId) return;
+
+  // Remove clone
+  if (dragClone) { dragClone.remove(); dragClone = null; }
+  if (dragEl)    { dragEl.style.opacity = ''; }
+  document.querySelectorAll('.drag-over').forEach(c => c.classList.remove('drag-over'));
+
+  // Reorder if dropped on a different card
+  if (dragOverId !== null && dragOverId !== dragTaskId) {
+    const fromIdx = tasks.findIndex(t => t.id === dragTaskId);
+    const toIdx   = tasks.findIndex(t => t.id === dragOverId);
+    if (fromIdx !== -1 && toIdx !== -1) {
+      const [moved] = tasks.splice(fromIdx, 1);
+      tasks.splice(toIdx, 0, moved);
+      save();
+    }
+  }
+  dragTaskId = null; dragOverId = null; dragEl = null;
+  renderTasks();
+}
+
+function onMouseDown(e) {
+  if (!editMode) return;
+  e.preventDefault();
+  const fakeTouch = { touches: [{ clientY: e.clientY, clientX: e.clientX }], currentTarget: e.currentTarget, preventDefault: ()=>{}, stopPropagation: ()=>{} };
+  onDragStart(fakeTouch);
+  function onMouseMove(ev) {
+    const ft = { touches: [{ clientY: ev.clientY, clientX: ev.clientX }], preventDefault: ()=>{} };
+    onDragMove(ft);
+  }
+  function onMouseUp() {
+    onDragEnd({});
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  }
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  HK BANNER
+// ═══════════════════════════════════════════════════════════
+function showHKBanner() {
+  const banner = document.getElementById('hkBanner');
+  banner.classList.remove('hidden');
+  sndLove();
+  launchHearts();
+  // Banner stays until tapped — no auto-dismiss
+}
+
+// ═══════════════════════════════════════════════════════════
+//  VOICE SPEECH
+//  Primary: ResponsiveVoice (neural, natural girl voice)
+//  Fallback: Web Speech API
+// ═══════════════════════════════════════════════════════════
+
+function cleanForSpeech(text) {
+  return text
+    .replace(/Ryelie/gi, 'Rylee')
+    .replace(/[\uD800-\uDFFF]|[\u2000-\u3300]|[\uFE00-\uFE0F]|[\u{1F000}-\u{1FFFF}]/gu, '')
+    .replace(/[^\x00-\x7F]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// Web Speech fallback — used only if ResponsiveVoice unavailable
+function getBestVoice() {
+  const voices = window.speechSynthesis.getVoices();
+  const priority = ['Siri','Samantha','Ava','Allison','Karen','Tessa','Fiona','Zira'];
+  for (const name of priority) {
+    const v = voices.find(v => v.name.includes(name) && v.lang.startsWith('en'));
+    if (v) return v;
+  }
+  return voices.find(v => v.lang.startsWith('en') &&
+    !['Daniel','Alex','Fred','Ralph','Bruce','Albert','Gordon','Reed','Tom'].some(n => v.name.includes(n))
+  ) || voices.find(v => v.lang.startsWith('en')) || null;
+}
+
+function fallbackSpeak(text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.resume();
+  const u = new SpeechSynthesisUtterance(text);
+  u.rate = 1.05; u.pitch = 1.8; u.volume = 1.0;
+  const v = getBestVoice();
+  if (v) u.voice = v;
+  window.speechSynthesis.speak(u);
+}
+
+// Keep Web Speech engine warm on each gesture (iOS requirement)
+function primeSpeech() {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.resume();
+}
+document.addEventListener('touchstart', primeSpeech, { passive: true });
+document.addEventListener('click', primeSpeech);
+
+// Main speak function — ResponsiveVoice first, fallback to Web Speech
+function speakText(text) {
+  const cleaned = cleanForSpeech(text);
+  if (!cleaned) return;
+  if (window.responsiveVoice && responsiveVoice.voiceSupport()) {
+    // Neural girl voice — natural, smooth, young-sounding
+    responsiveVoice.speak(cleaned, 'UK English Girl', {
+      rate:   0.9,    // natural conversational pace
+      pitch:  1.4,    // bright and light without being shrill
+      volume: 1.0
+    });
+  } else {
+    fallbackSpeak(cleaned);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  EVENT WIRING — all done here, no inline onclick anywhere
+// ═══════════════════════════════════════════════════════════
+document.getElementById('btnAllDone').addEventListener('click', doAllDone);
+document.getElementById('btnFresh').addEventListener('click', doFreshStart);
+document.getElementById('btnRestart').addEventListener('click', doFreshStart);
+document.getElementById('editToggle').addEventListener('click', () => {
+  editMode = !editMode;
+  document.getElementById('editToggle').textContent = editMode ? '✓ Done Editing' : '✏️ Edit Tasks';
+  renderTasks();
+});
+
+document.getElementById('hkBtn').addEventListener('click', showHK);
+document.getElementById('hkBanner').addEventListener('click', () => { document.getElementById('hkBanner').classList.add('hidden'); showHK(); });
+document.getElementById('daffBtn').addEventListener('click', showDaff);
+document.getElementById('btnHKClose').addEventListener('click', () => { window.speechSynthesis && window.speechSynthesis.cancel(); document.getElementById('overlayHK').classList.remove('show'); });
+document.getElementById('btnDaffNew').addEventListener('click', newDaff);
+document.getElementById('btnDaffClose').addEventListener('click', () => { window.speechSynthesis && window.speechSynthesis.cancel(); document.getElementById('overlayDaff').classList.remove('show'); });
+
+document.getElementById('settingsOpenBtn').addEventListener('click', () => {
+  renderSettings();
+  document.getElementById('settingsPanel').classList.add('open');
+});
+document.getElementById('settingsCloseBtn').addEventListener('click', () => {
+  document.getElementById('settingsPanel').classList.remove('open');
+});
+document.getElementById('settingsPanel').addEventListener('click', e => {
+  if (e.target === document.getElementById('settingsPanel'))
+    document.getElementById('settingsPanel').classList.remove('open');
+});
+
+// ═══════════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════════
+renderTasks();
+updateAll();
+setInterval(() => {
+  const active = tasks.filter(t => t.active);
+  const done   = active.filter(t => doneMap[t.id]).length;
+  const total  = active.length;
+  const bmi    = done === 0 ? 0 : done < total / 2 ? 1 : done < total ? 2 : 4;
+  const b = document.getElementById('buddyMsg');
+  b.style.animation = 'none'; b.offsetHeight;
+  b.style.animation = 'pop 0.35s cubic-bezier(0.34,1.56,0.64,1) both';
+  b.textContent = BUDDY_MSGS[bmi]('Ryelie');
+}, 5000);
+</script>
+</body>
+</html>
